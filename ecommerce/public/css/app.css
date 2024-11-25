@@ -1,0 +1,134 @@
+/* Main container style */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Heading Style */
+h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 2.5rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+/* Card Styling */
+.product-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Image Style */
+.product-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+
+.product-img-placeholder {
+    width: 100%;
+    height: 250px;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    font-size: 16px;
+}
+
+/* Card body text */
+.product-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.product-category,
+.product-price,
+.product-stock {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* Button Styling */
+.btn {
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-warning {
+    background-color: #f39c12;
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #e67e22;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+/* Flexbox Layout */
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .product-card {
+        margin-bottom: 30px;
+    }
+
+    .product-title {
+        font-size: 1.25rem;
+    }
+
+    .product-price, .product-category, .product-stock {
+        font-size: 0.9rem;
+    }
+
+    .product-image {
+        height: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .product-card {
+        margin-bottom: 20px;
+    }
+
+    .product-title {
+        font-size: 1.2rem;
+    }
+
+    .product-price, .product-category, .product-stock {
+        font-size: 0.8rem;
+    }
+
+    .product-image {
+        height: 180px;
+    }
+}
