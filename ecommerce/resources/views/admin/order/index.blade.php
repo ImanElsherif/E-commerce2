@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1 class="mb-4">All Orders</h1>
+<div class="container my-5">
+    <h1 class="mb-4 text-center">All Orders</h1>
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -10,43 +10,55 @@
         </div>
     @endif
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>User</th>
-                <th>Address</th>
-                <th>Payment</th>
-                <th>Items</th>
-                <th>Total Quantity</th>
-                <th>Created At</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($orders as $order)
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="bg-light">
                 <tr>
-                    <td>{{ $order->id }}</td>
-                    <td>{{ $order->user->name ?? 'Guest' }}</td>
-                    <td>{{ $order->address }}</td>
-                    <td>{{ $order->payment }}</td>
-                    <td>
-                        <ul>
-                            @foreach($order->orderItems as $item)
-                                <li>
-                                    {{ $item->product->name ?? 'Product Deleted' }} (x{{ $item->quantity }})
-                                </li>
-                            @endforeach
-                        </ul>
-                    </td>
-                    <td>{{ $order->orderItems->sum('quantity') }}</td>
-                    <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
+                    <th>#</th>
+                    <th>User</th>
+                    <th>Address</th>
+                    <th>Payment</th>
+                    <th>Items</th>
+                    <th>Total Quantity</th>
+                    <th>Total Price</th>
+                    <th>Created At</th>
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="7" class="text-center">No orders found.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @forelse($orders as $order)
+                    @php
+                        $totalPrice = 0; // Initialize total price for the order
+                    @endphp
+                    <tr>
+                        <td class="align-middle">{{ $order->id }}</td>
+                        <td class="align-middle">{{ $order->user->name ?? 'Guest' }}</td>
+                        <td class="align-middle">{{ $order->address }}</td>
+                        <td class="align-middle">{{ $order->payment }}</td>
+                        <td class="align-middle">
+                            <ul class="list-unstyled mb-0">
+                                @foreach($order->orderItems as $item)
+                                    @php
+                                        $itemTotal = $item->product->price * $item->quantity;
+                                        $totalPrice += $itemTotal; // Add the item total to the order's total price
+                                    @endphp
+                                    <li>
+                                        <strong>{{ $item->product->name ?? 'Product Deleted' }}</strong>
+                                        (x{{ $item->quantity }}) - 
+                                       ${{ number_format($item->product->price, 2) }}                                   </li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        <td class="align-middle">{{ $order->orderItems->sum('quantity') }}</td>
+                        <td class="align-middle">${{ number_format($totalPrice, 2) }}</td>
+                        <td class="align-middle">{{ $order->created_at->format('Y-m-d H:i') }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="8" class="text-center text-muted">No orders found.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 @endsection

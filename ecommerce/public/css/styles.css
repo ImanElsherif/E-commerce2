@@ -331,3 +331,47 @@ body {
     }
 }
 
+.receipt {
+    font-family: 'Courier New', Courier, monospace;
+    border: 1px solid #ddd;
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+}
+
+.receipt-header h4 {
+    margin-bottom: 0;
+}
+
+.receipt-header p {
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th, .table td {
+    padding: 8px 10px;
+    text-align: left;
+}
+
+.table th {
+    border-bottom: 1px solid #ccc;
+}
+
+.receipt-footer {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.receipt-footer p {
+    margin: 4px 0;
+}
+
+.receipt-footer hr {
+    margin: 12px 0;
+    border: 1px solid #ccc;
+}

@@ -23,9 +23,29 @@ class OrderController extends Controller
 
     public function create()
     {
-        return view('user.create');
-    }
+        $userid = Auth::id();
+        $cart = Cart::where('user_id', $userid)->with('items.product')->first();
 
+        // Ensure the cart exists
+        if (!$cart) {
+            return redirect()->back()->withErrors(['cart_id' => 'Cart not found for the current user.']);
+        }
+
+        // Calculate the subtotal, quantity, tax, shipping, and total
+        $subtotal = 0;
+        $quantity = 0;
+        foreach ($cart->items as $cartItem) {
+            $subtotal += $cartItem->product->price * $cartItem->quantity;
+            $quantity += $cartItem->quantity;
+        }
+
+        $shippingFee = 10; // Placeholder, can be dynamic
+        $tax = $subtotal * 0.05; // Example: 5% tax
+        $total = $subtotal + $shippingFee + $tax;
+
+        return view('user.create', compact('cart', 'subtotal', 'quantity', 'shippingFee', 'tax', 'total'));
+    }
+    
     public function store(Request $request)
 {
     $userid = Auth::id();
