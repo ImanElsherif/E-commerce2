@@ -13,13 +13,7 @@
                     <li class="list-group-item d-flex justify-content-between align-items-center py-4">
     <!-- Product Image -->
     <div class="product-image-wrapper me-3">
-        @if ($item->product->image_path)
-            <img src="{{ asset('storage/' . $item->product->image_path) }}" alt="{{ $item->product->name }}" class="product-image">
-        @else
-            <div class="product-img-placeholder">
-                <span>No Image Available</span>
-            </div>
-        @endif
+            <img src="{{ asset('/' . $item->product->images->first()->file_path) }}" alt="{{ $item->product->name }}" class="product-image">
     </div>
 
     <!-- Product Details -->

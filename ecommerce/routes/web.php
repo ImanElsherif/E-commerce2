@@ -57,6 +57,14 @@ Route::get('/', [ProductController::class, 'filter'])->name('filter');
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
 });
+
+
+Route::prefix('user')->name('user.')->middleware('auth')->group(function () {
+    Route::get('/userShow/{id}', [ProductController::class, 'userShow'])->name('userShow');
+});
+
+
+
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('products', ProductController::class);
 });

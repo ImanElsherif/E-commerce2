@@ -64,18 +64,20 @@
                         </div>
                     </div>
 
+                    <!-- Product Images (Multiple) -->
                     <div class="mb-3">
-                        <label for="image" class="form-label">Product Image</label>
-                        <input type="file" name="image" id="image" class="form-control">
-                        @if ($product->image_path)
-                            <div class="mt-3">
-                                <img src="{{ asset('storage/' . $product->image_path) }}" alt="Product Image" width="150">
+                                <label for="images" class="form-label">Product Images</label>
+                                <input
+                                    type="file"
+                                    name="images[]"
+                                    id="images"
+                                    class="form-control @error('images') is-invalid @enderror"
+                                    multiple=" "
+                                >
+                                @error('images')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                        @endif
-                        @error('image')
-                            <div class="text-danger mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
 
                     <div class="text-center">
                         <button type="submit" class="btn btn-success btn-lg mt-4 px-4 py-2">Update Product</button>

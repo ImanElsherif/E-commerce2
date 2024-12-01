@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Image;
 use App\Models\Category;
 class ProductController extends Controller
 {
@@ -43,22 +44,31 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:1',
             'stock_quantity' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('product_images', 'public');
-        }
-
-        Product::create([
+        $product=Product::create([
             'category_id' => $request->category_id,
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
             'stock_quantity' => $request->stock_quantity,
-            'image_path' => $imagePath,
         ]);
+
+        if ($request->hasFile('images')) {
+            $images = $request->file('images'); // Get the uploaded images
+
+            foreach ($images as $image) {
+                $imageName = date('YmdHis') . '-' . $image->getClientOriginalName();
+
+                $image->move(public_path('uploads/product'), $imageName);
+
+                Image::create([
+                    'product_id' => $product->id,
+                    'file_path' => 'uploads/product/' . $imageName,
+                ]);
+            }
+        }
 
         return redirect()->route('admin.products.index')->with('success', 'Product added successfully!');
     }
@@ -69,8 +79,8 @@ class ProductController extends Controller
         return view('admin.products.edit', compact('product'));
     }
         // Update the specified product
-        public function update(Request $request, string $id)
-        {
+    public function update(Request $request, string $id)
+    {
             $product = Product::find($id);
             $request->validate([
                 'category_id' => 'required|exists:categories,id',
@@ -78,16 +88,8 @@ class ProductController extends Controller
                 'description' => 'nullable|string',
                 'price' => 'required|numeric|min:1',
                 'stock_quantity' => 'required|integer|min:0',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-
-            $imagePath = $product->image_path;
-            if ($request->hasFile('image')) {
-                if ($product->image_path) {
-                    Storage::delete('public/' . $product->image_path);
-                }
-                $imagePath = $request->file('image')->store('product_images', 'public');
-            }
 
             $product->update([
                 'category_id' => $request->category_id,
@@ -95,8 +97,21 @@ class ProductController extends Controller
                 'description' => $request->description,
                 'price' => $request->price,
                 'stock_quantity' => $request->stock_quantity,
-                'image_path' => $imagePath,
             ]);
+            if ($request->hasFile('images')) {
+                $images = $request->file('images'); // Get the uploaded images
+
+                foreach ($images as $image) {
+                    $imageName = date('YmdHis') . '-' . $image->getClientOriginalName();
+
+                    $image->move(public_path('uploads/product'), $imageName);
+
+                    Image::create([
+                        'product_id' => $product->id,
+                        'file_path' => 'uploads/product/' . $imageName,
+                    ]);
+                }
+            }
 
             return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');
         }
@@ -120,7 +135,13 @@ class ProductController extends Controller
 
     public function show(string $id)
     {
-        $product = Prodct::find($id);
-        return view('product.show', compact('product'));
+        $product = Product::with ('images')->where('id', $id)->first();
+        return view('admin.products.show', compact('product'));
+    }
+
+    public function userShow(string $id)
+    {
+        $product = Product::with ('images')->where('id', $id)->first();
+        return view('user.show', compact('product'));
     }
 }

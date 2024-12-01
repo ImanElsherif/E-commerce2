@@ -1,39 +1,38 @@
+{{-- resources/views/product/show.blade.php --}}
 @extends('layouts.app')
 
-@php
-    $categories = App\Models\Category::all();
-@endphp
-
 @section('content')
-    <div class="container">
-        <!-- Category Filter Dropdown -->
-        <form method="GET" action="{{ route('filter') }}">
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <label for="category" class="form-label">Filter by Category</label>
-                    <select name="category_id" id="category" class="form-select" onchange="this.form.submit()">
-                        <option value="">All Categories</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
+    <div class="container my-5">
+        <h1 class="text-center mb-5 display-4">{{ $product->name }}</h1>
+
+        <!-- Product Container -->
+        <div class="row">
+            <!-- Product Images -->
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <div class="exzoom" id="exzoom">
+                    <div class="exzoom_img_box">
+                        <ul class='exzoom_img_ul'>
+                            @foreach ($product->images as $image)
+                                <li>
+                                    <img src="{{ asset('/' . $image->file_path) }}"
+                                         alt="{{ $product->name }}"
+                                         class="main-image"
+                                         style="width: 100%; height: auto; object-fit: contain;" />
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="exzoom_nav"></div>
+                    <p class="exzoom_btn">
+                        <a href="javascript:void(0);" class="exzoom_prev_btn"> < </a>
+                        <a href="javascript:void(0);" class="exzoom_next_btn"> > </a>
+                    </p>
                 </div>
             </div>
-        </form>
 
-        <!-- Display Products -->
-        <div class="row">
-            @foreach ($products as $product)
-                <div class="col-md-4 mb-4">
-                    <!-- Card for each product -->
-                    <div class="product-card shadow-lg rounded">
-                        <!-- Product Image -->
-                        <a href="{{ route('user.userShow', $product->id) }}">
-                                <img src="{{ asset('/' . $product->images->first()->file_path) }}" alt="{{ $product->name }}" class="main-image">
-                        </a>
-                        <div class="card-body">
+            <!-- Product Details -->
+            <div class="col-md-6">
+            <div class="card-body">
                             <h5 class="product-title">{{ $product->name }}</h5>
                             <p class="product-category"><strong>Description:</strong> {{ $product->description }}</p>
                             <p class="product-price"><strong>Price:</strong> ${{ $product->price }}</p>
@@ -66,9 +65,23 @@
                                 @endauth
                             @endif
                         </div>
-                    </div>
-                </div>
-            @endforeach
+            </div>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(function() {
+            $("#exzoom").exzoom({
+                "navWidth": 60,
+                "navHeight": 60,
+                "navItemNum": 5,
+                "navItemMargin": 7,
+                "navBorder": 1,
+                "autoPlay": false,
+                "autoPlayTimeout": 2000
+            });
+        });
+    </script>
+@endpush

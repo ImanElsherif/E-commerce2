@@ -33,13 +33,13 @@
                             <!-- Product Name -->
                             <div class="mb-3">
                                 <label for="name" class="form-label">Product Name</label>
-                                <input 
-                                    type="text" 
-                                    name="name" 
-                                    id="name" 
-                                    class="form-control @error('name') is-invalid @enderror" 
-                                    value="{{ old('name') }}" 
-                                    placeholder="Enter product name" 
+                                <input
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    class="form-control @error('name') is-invalid @enderror"
+                                    value="{{ old('name') }}"
+                                    placeholder="Enter product name"
                                     required
                                 >
                                 @error('name')
@@ -50,10 +50,10 @@
                             <!-- Category -->
                             <div class="mb-3">
                                 <label for="category_id" class="form-label">Category</label>
-                                <select 
-                                    name="category_id" 
-                                    id="category_id" 
-                                    class="form-select @error('category_id') is-invalid @enderror" 
+                                <select
+                                    name="category_id"
+                                    id="category_id"
+                                    class="form-select @error('category_id') is-invalid @enderror"
                                     required
                                 >
                                     <option value="" disabled selected>Select a category</option>
@@ -71,13 +71,13 @@
                             <!-- Price -->
                             <div class="mb-3">
                                 <label for="price" class="form-label">Price</label>
-                                <input 
-                                    type="number" 
-                                    name="price" 
-                                    id="price" 
-                                    class="form-control @error('price') is-invalid @enderror" 
-                                    value="{{ old('price') }}" 
-                                    placeholder="Enter product price" 
+                                <input
+                                    type="number"
+                                    name="price"
+                                    id="price"
+                                    class="form-control @error('price') is-invalid @enderror"
+                                    value="{{ old('price') }}"
+                                    placeholder="Enter product price"
                                     required
                                 >
                                 @error('price')
@@ -88,13 +88,13 @@
                             <!-- Stock Quantity -->
                             <div class="mb-3">
                                 <label for="stock_quantity" class="form-label">Stock Quantity</label>
-                                <input 
-                                    type="number" 
-                                    name="stock_quantity" 
-                                    id="stock_quantity" 
-                                    class="form-control @error('stock_quantity') is-invalid @enderror" 
-                                    value="{{ old('stock_quantity') }}" 
-                                    placeholder="Enter stock quantity" 
+                                <input
+                                    type="number"
+                                    name="stock_quantity"
+                                    id="stock_quantity"
+                                    class="form-control @error('stock_quantity') is-invalid @enderror"
+                                    value="{{ old('stock_quantity') }}"
+                                    placeholder="Enter stock quantity"
                                     required
                                 >
                                 @error('stock_quantity')
@@ -102,16 +102,17 @@
                                 @enderror
                             </div>
 
-                            <!-- Product Image -->
+                            <!-- Product Images (Multiple) -->
                             <div class="mb-3">
-                                <label for="image" class="form-label">Product Image</label>
-                                <input 
-                                    type="file" 
-                                    name="image" 
-                                    id="image" 
-                                    class="form-control @error('image') is-invalid @enderror"
+                                <label for="images" class="form-label">Product Images</label>
+                                <input
+                                    type="file"
+                                    name="images[]"
+                                    id="images"
+                                    class="form-control @error('images') is-invalid @enderror"
+                                    multiple=" "
                                 >
-                                @error('image')
+                                @error('images')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -119,11 +120,11 @@
                             <!-- Description -->
                             <div class="mb-3">
                                 <label for="description" class="form-label">Description</label>
-                                <textarea 
-                                    name="description" 
-                                    id="description" 
-                                    class="form-control @error('description') is-invalid @enderror" 
-                                    rows="4" 
+                                <textarea
+                                    name="description"
+                                    id="description"
+                                    class="form-control @error('description') is-invalid @enderror"
+                                    rows="4"
                                     placeholder="Enter product description"
                                 >{{ old('description') }}</textarea>
                                 @error('description')

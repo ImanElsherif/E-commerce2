@@ -21,22 +21,17 @@ $categories = App\Models\Category::all();
                     <h3 class="category-title">{{ $category->name }}</h3>
                     <div class="category-products">
                         @foreach ($category->products as $product)
-                            <div class="product-card">
-                                <!-- Product Image -->
-                                @if ($product->image_path)
-                                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" class="product-image">
-                                @else
-                                    <div class="product-img-placeholder">
-                                        <span>No Image Available</span>
-                                    </div>
-                                @endif
-
-                                <!-- Product Details -->
+                        <div class="product-card">
+                            <!-- Product Image -->
+                            <a href="{{ route('products.show', $product->id) }}">
+                                <img src="{{ asset('/' . $product->images->first()->file_path) }}" alt="{{ $product->name }}" class="main-image">
+                            </a>
+                        <!-- Product Details -->
                                 <div class="card-body">
                                     <h5 class="product-title">{{ $product->name }}</h5>
                                     <p class="product-price">Price: ${{ number_format($product->price, 2) }}</p>
                                     <p class="product-stock">
-                                        Stock: 
+                                        Stock:
                                         <span class="{{ $product->stock_quantity > 0 ? 'in-stock' : 'out-of-stock' }}">
                                             {{ $product->stock_quantity > 0 ? $product->stock_quantity : 'Out of Stock' }}
                                         </span>
@@ -52,7 +47,7 @@ $categories = App\Models\Category::all();
                                         </form>
                                     </div>
                                 </div>
-                            </div>
+                        </div>
                         @endforeach
                     </div>
                 </div>
@@ -60,3 +55,4 @@ $categories = App\Models\Category::all();
         </div>
     </div>
 @endsection
+
